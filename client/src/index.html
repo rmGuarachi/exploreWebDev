@@ -2,14 +2,27 @@
 <!doctype html>
 <html>
   <head>
-    <title>Getting Cozy with Browserify</title>
+    <title>Practice JS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="./build/css/main.css">
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        .map-container {position: relative; padding-top: 20%;}
+        #mapbox-map { position:absolute; top:0; bottom:0; width:100%; }}
+    </style>
   </head>
   <body>
       <div class="container">
         <h1>Tabulator</h1>
         <div id="example-table"></div>
       </div>
+      <div class="map-container">
+        <h1>Mapbox</h1>
+        <div id="mapbox-map"></div>
+      </div>
+      <div id='map'></div>
     <script src="./build/js/bundle.js"></script>
   </body>
 </html>

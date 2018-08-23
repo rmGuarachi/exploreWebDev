@@ -1,38 +1,122 @@
 // var $ = require('jquery');
 import jquery from 'jquery';
+import mapboxgl from 'mapbox-gl';
 window.jQuery = jquery;
 window.$ = jquery;
 require('jquery-ui');  //what is the difference between import and require
 require('jquery.tabulator');
 
 
-//define some sample data
-// var tabledata = [
-//     {id:1, name:"Oli Bob", age:"12", col:"red", dob:""},
-//     {id:2, name:"Mary May", age:"1", col:"blue", dob:"14/05/1982"},
-//     {id:3, name:"Christine Lobowski", age:"42", col:"green", dob:"22/05/1982"},
-//     {id:4, name:"Brendon Philips", age:"42", col:"orange", dob:"01/08/1980"},
-//     {id:5, name:"Margret Marmajuke", age:"16", col:"yellow", dob:"31/01/1999"},
-// ];
-
-
+var editCheck = function(cell) {
+    var data = cell.getRow().getData();
+    return data['NDB_Number'] < 45001697;
+}
 
 $("#example-table").tabulator({
+    layout:"fitDataFill",
+    ajaxURL: 'http://localhost:5000/list',
     columns:[ //Define Table Columns
-        {title: "NDB Number", field:"NDB_Number"},
-        {title: "long name", field: "long_name"},
-        {title: "data source", field: "data_source"},
-        {title: "gtin upc", field: "gtin_upc"},
-        {title: "manufacturer", field: "manufacturer"},
-        {title:" date modified", field:"date_modified"},
-        {title:" date available", field:"date_available"},
-        {title:" ingredients english", field:"ingredients_english"}
+        {formatter:"responsiveCollapse", headerSort:false},
+        {title: "NDB Number", field:"NDB_Number",},
+        {title: "long name", field: "long_name", headerFilter:true},
+        {title: "data source", field: "data_source", visible: false},
+        {title: "gtin upc", field: "gtin_upc", visible: false},
+        {title: "manufacturer", field: "manufacturer", editor:"input", editable:editCheck, validator:"required"},
+        {title:" date modified", field:"date_modified", visible:false},
+        {title:" date available", field:"date_available", visible:false},
+        {title:" ingredients english", field:"ingredients_english", variableHeight: true}
         
-    ]
+    ],
+    index: "NDB_Number",
+    tooltips:true,
+    initialSort: [
+        {column: "NDB_Number", dir: "desc"}
+    ],
+    responsiveLayout:"collapse",
+    responsiveLayoutCollapseStartOpen: false,
+    resizableColumns:false
+
 });
 
-$("#example-table").tabulator("setData", 'http://localhost:5000/list')
+function loadMap(lat, lon) {
+    console.log(lat, lon)
+    mapboxgl.accessToken = 'pk.eyJ1Ijoicm1ndWFyYWNoaSIsImEiOiJjamwzdDdseXcyNTk5M3Fuc3p2ZzJmdXdlIn0.cjtHea9XjbVzu7IQDIXsog';
+    const map = new mapboxgl.Map({
+        container: 'mapbox-map',
+        center: [lon, lat],
+        zoom: 9,
+        style: 'mapbox://styles/rmguarachi/cjl3ujowo4sle2so9nb6k4i0v',
+        trackResize: true
+    });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
 
-//load sample data into the table
-// $("#example-table").tabulator("setData", tabledata);
+    let geoTracker = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true,
+        showUserLocation: true
+    });
+    map.addControl(geoTracker);
+
+
+    map.addControl(new mapboxgl.AttributionControl({
+        compact: true
+    }));
+
+    map.on('load', function() {
+     map.addLayer({
+        "id": "points",
+        "type": "symbol",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-73.87118099999999, 40.7419493 ]
+                    },
+                    "properties": {
+                        "title": "Home",
+                        "icon": "circle-stroked"
+                    }
+                }, {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-122.414, 37.776]
+                    },
+                    "properties": {
+                        "title": "Mapbox SF",
+                        "icon": "harbor"
+                    }
+                }]
+            }
+        },
+        "layout": {
+            "icon-image": "{icon}-15",
+            "text-field": "{title}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-offset": [0, 0.6],
+            "text-anchor": "top"
+        }
+    });
+});
+}
+
+
+if ("geolocation" in navigator) {
+    /* geolocation is available */
+    navigator.geolocation.getCurrentPosition(function(position) {
+        loadMap(position.coords.latitude, position.coords.longitude);
+        console.log("loading");
+    });
+} else {
+  /* geolocation IS NOT available */
+  console.log("geolocation not available");
+  loadMap(-74.50, 40);
+}

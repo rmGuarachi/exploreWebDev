@@ -1,5 +1,4 @@
-import csv, sqlite3
-import os
+import csv, sqlite3, os
 
 db = "products.db"
 cwd = os.path.dirname(os.path.realpath(__file__))
@@ -32,7 +31,7 @@ def get_list():
     connection = sqlite3.connect(path_db)
     connection.row_factory = dict_factory
     cursor = connection.cursor()
-    cursor.execute("select * from products limit 1000")
+    cursor.execute("select * from products limit 10")
     results = cursor.fetchall()
     connection.close()
     return results
