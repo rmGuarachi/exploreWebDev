@@ -7,10 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="./build/css/main.css">
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
     <style>
-        body { margin:0; padding:0; }
-        .map-container {position: relative; padding-top: 20%;}
-        #mapbox-map { position:absolute; top:0; bottom:0; width:100%; }}
+        body { 
+          margin:0; 
+          padding:0; 
+        }
+        
+        .map-container {
+          position: relative; 
+          padding-top: 20%;  
+          margin-top: 20px; 
+          border: solid 3px red;
+        }
+        
+        #mapbox, #mapbox2 { 
+          position:absolute; 
+          top:0; 
+          bottom:0; 
+          width:100%; 
+        }
     </style>
   </head>
   <body>
@@ -20,9 +36,42 @@
       </div>
       <div class="map-container">
         <h1>Mapbox</h1>
-        <div id="mapbox-map"></div>
+        <div id="mapbox"></div>
+        <div id='menu'>
+            <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+            <label for='basic'>basic</label>
+            <input id='streets' type='radio' name='rtoggle' value='streets'>
+            <label for='streets'>streets</label>
+            <input id='bright' type='radio' name='rtoggle' value='bright'>
+            <label for='bright'>bright</label>
+            <input id='light' type='radio' name='rtoggle' value='light'>
+            <label for='light'>light</label>
+            <input id='dark' type='radio' name='rtoggle' value='dark'>
+            <label for='dark'>dark</label>
+            <input id='satellite' type='radio' name='rtoggle' value='satellite'>
+            <label for='satellite'>satellite</label>
+        </div>
+
       </div>
-      <div id='map'></div>
+      <div class="map-container">
+        <h1>Mapbox</h1>
+        <div id="mapbox2"></div>
+        <div id='menu'>
+            <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+            <label for='basic'>basic</label>
+            <input id='streets' type='radio' name='rtoggle' value='streets'>
+            <label for='streets'>streets</label>
+            <input id='bright' type='radio' name='rtoggle' value='bright'>
+            <label for='bright'>bright</label>
+            <input id='light' type='radio' name='rtoggle' value='light'>
+            <label for='light'>light</label>
+            <input id='dark' type='radio' name='rtoggle' value='dark'>
+            <label for='dark'>dark</label>
+            <input id='satellite' type='radio' name='rtoggle' value='satellite'>
+            <label for='satellite'>satellite</label>
+        </div>
+
+      </div>
     <script src="./build/js/bundle.js"></script>
   </body>
 </html>
