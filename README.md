@@ -7,18 +7,32 @@ I created this repository to learn web development. My goal for this project is 
 
 ## Installing Requirements
 
+```
 pip install -r requirements.txt
+```
+```
 cd client
+```
+```
 npm install 
+```
 
 
 ## Running
 
 ### Running Front End
+```
 cd client
+```
+```
 npm start
+```
 
 
 ### Running Back End
+```
 cd app
+```
+```
 FLASK_APP=server.py flask run
+```
