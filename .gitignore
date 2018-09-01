@@ -117,6 +117,9 @@ coverage.xml
 local_settings.py
 db.sqlite3
 
+# database
+*.db
+
 # Flask stuff:
 instance/
 .webassets-cache
