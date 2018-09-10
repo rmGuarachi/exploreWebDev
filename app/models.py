@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from sqlalchemy import (Table, Column, Integer, String, DateTime, Text, create_engine, 
     ForeignKey, Float, ForeignKeyConstraint)
 from sqlalchemy.orm import relationship, backref
@@ -31,11 +30,10 @@ class SubwayStation(Base):
     @property
     def serialize(self):
         return dict(
-            id = self.id,
             name = self.name,
             lat = self.lat,
             lon = self.lon,
-            lines = self.lines
+            lines = [i.serialize for i in self.lines]
         )    
 
 class SubwayLine(Base):

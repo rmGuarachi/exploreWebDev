@@ -28,7 +28,7 @@ def hello_world():
 
 @app.route('/list')
 def get_list():
-    stations = session.query(SubwayStation).slice(0, 10)
+    stations = session.query(SubwayStation).all()
     return jsonify([i.serialize for i in stations])
 
 
