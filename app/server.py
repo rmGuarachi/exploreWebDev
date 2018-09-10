@@ -28,8 +28,20 @@ def hello_world():
 
 @app.route('/list')
 def get_list():
-    stations = session.query(SubwayStation).all()
+    # TODO temp fix for issues with sqlite thread issues
+    dbsession = sessionmaker(bind=engine)
+    session = dbsession()
+    stations = session.query(SubwayStation).slice(0,10)
     return jsonify([i.serialize for i in stations])
+
+
+@app.route('/update/station/<lat>/<lon>')
+def update_station(lat, lon):
+    return jsonify([lat, lon])
+
+@app.route('/update/train/<id>')
+def update_train_line(id):
+    return id
 
 
 if __name__ == '__main__':

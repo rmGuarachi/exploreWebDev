@@ -8,35 +8,58 @@ require('jquery-ui');  //what is the difference between import and require
 require('jquery.tabulator');
 
 
-var editCheck = function(cell) {
-    var data = cell.getRow().getData();
-    return data['NDB_Number'] < 45001697;
+function flattenData(data){
+    var output = [];
+    function flattenRow(row){
+        var outputRow = {};
+        for(var prop in row){
+            if(typeof row[prop] !== "object"){
+                outputRow[prop] = row[prop];
+            }
+            else{
+                var flat = flattenData(row[prop]);
+                console.log(flat)
+                for(var flatProp in flat){
+                    outputRow[prop] = flat[flatProp];
+                }
+            }
+        }
+        return outputRow;
+    }
+    data.forEach(function(row){
+        output.push(flattenRow(row));
+    });
+    console.log(output)
+    return output;
 }
 
+
 $("#example-table").tabulator({
-    layout:"fitDataFill",
+    height: 500,
+    layout:"fitColumns",
     ajaxURL: 'http://localhost:5000/list',
     columns:[ //Define Table Columns
-        {formatter:"responsiveCollapse", headerSort:false},
-        {title: "NDB Number", field:"NDB_Number",},
-        {title: "long name", field: "long_name", headerFilter:true},
-        {title: "data source", field: "data_source", visible: false},
-        {title: "gtin upc", field: "gtin_upc", visible: false},
-        {title: "manufacturer", field: "manufacturer", editor:"input", editable:editCheck, validator:"required"},
-        {title:" date modified", field:"date_modified", visible:false},
-        {title:" date available", field:"date_available", visible:false},
-        {title:" ingredients english", field:"ingredients_english", variableHeight: true}
-
+        {title: "Station Name", field:"name",},
+        {title: "line", field: "lines"},
+        {title: "lat", field: "lat"},
+        {title: "lon", field: "lon"},
     ],
-    index: "NDB_Number",
-    tooltips:true,
     initialSort: [
-        {column: "NDB_Number", dir: "desc"}
+        {column: "name", dir: "asc"}
     ],
     responsiveLayout:"collapse",
-    responsiveLayoutCollapseStartOpen: false,
-    resizableColumns:false
-
+    rowClick:function(e, row){ 
+        var popup = new mapboxgl.Popup({closeOnClick: false})
+            .setLngLat([row.getData().lon, row.getData().lat])
+            .setHTML(row.getData().name)
+            .addTo(map);
+    },
+    ajaxResponse:function(url, params, response){
+        //url - the URL of the request
+        //params - the parameters passed with the request
+        //response - the JSON object returned in the body of the response.
+        return flattenData(response); //return the tableData peroperty of a response json object
+    },
 });
 
 
@@ -91,10 +114,6 @@ map.addControl(new mapboxgl.GeolocateControl({
 
 map.addControl(new mapboxgl.FullscreenControl());
 
-var popup = new mapboxgl.Popup({closeOnClick: false})
-    .setLngLat([-73.50, 40.73])
-    .setHTML('<h1>Hello World!</h1>')
-    .addTo(map);
 
 
 var geojson = {

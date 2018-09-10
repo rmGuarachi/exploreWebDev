@@ -12,7 +12,7 @@ def get_lat_lon(latlong):
     return float(l[0]), float(l[1].split(')')[0])
 
 def get_subway_station_info(row):
-    lat, lon = get_lat_lon(row['the_geom'])
+    lon, lat = get_lat_lon(row['the_geom'])
     return {
         'name': row['NAME'],
         'trains': row['LINE'].split('-')[:-1] or [row['LINE']],

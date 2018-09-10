@@ -45,7 +45,7 @@ class SubwayLine(Base):
     def serialize(self):
         return dict(
             id = self.id,
-            color = self.color
+            color = self.color or ""
         )
     
 
