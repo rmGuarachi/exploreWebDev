@@ -4,36 +4,57 @@ from multiprocessing import Pool
 import pandas as pd
 from sqlalchemy.orm import sessionmaker
 
-from models import Base, Product, engine
+from models import Base, engine, SubwayStation, SubwayLine
 
 
-def add_product(df_slice):
-    return [Product(**dict(p[1])) for p in df_slice.iterrows()]
+def get_lat_lon(latlong):
+    l = latlong.split('(')[1].split(" ")
+    return float(l[0]), float(l[1].split(')')[0])
+
+def get_subway_station_info(row):
+    lat, lon = get_lat_lon(row['the_geom'])
+    return {
+        'name': row['NAME'],
+        'trains': row['LINE'].split('-')[:-1] or [row['LINE']],
+        'lat' : lat,
+        'lon': lon
+    }
 
 
 def create_db():
-    products = pd.read_csv('dataset/products.csv', parse_dates=[5, 6])
+    df = pd.read_csv('dataset/mta_subway_station.csv')
+    # create transcompany
+    train_stations = []
+    train_lines = []
+    stations  = df.iterrows()
+    for index, row in df.iterrows():
+        info = get_subway_station_info(row)
+        cStation = SubwayStation(name=info['name'], lat=info['lat'], lon=info['lon'])
+        train_stations.append(cStation)
+        for t in info['trains']:
+            add = True
+            print(info['trains'])
+            c = SubwayLine(id=t)
+            for line in train_lines:
+                if line.id == t:
+                    print(t , line.id)
+                    c = line
+                    add = False
+                    break
+            if add:
+                train_lines.append(c)
+            cStation.lines.append(c)
+    print("here")
+    for train in train_lines:
+        print(train.id)
+    session.bulk_save_objects(train_stations)
+    session.bulk_save_objects(train_lines)
+    session.commit()
 
-    l = len(products)
-    lists = [
-        products[:int(l / 4)],
-        products[int(l / 4): int(l / 2)],
-        products[int(l / 2): int((3 * l) / 4)],
-        products[int((3 * l) / 4):]
-    ]
-    with Pool(4) as p:
-        print('start')
-        products = chain(*p.map(add_product, lists))
-        print('finished')
-        session.add_all(products)
-        # for product in products:
-            # print(product)
-            # session.add(product)
-        session.commit()
 
 
 if __name__ == '__main__':
     Base.metadata.bind = engine
     dbsession = sessionmaker(bind=engine)
     session = dbsession()
-    create_db()
+    create_db()    

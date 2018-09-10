@@ -1,36 +1,36 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, Text, create_engine
+from sqlalchemy import (Table, Column, Integer, String, DateTime, Text, create_engine, 
+    ForeignKey, Float)
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
 
 
-class Product(Base):
-    __tablename__ = 'products'
-    NDB_Number = Column(Integer, primary_key=True)
-    long_name = Column(String(250), nullable=False)
-    data_source = Column(String(250), nullable=False)
-    gtin_upc = Column(String(250), nullable=False)
-    manufacturer = Column(String(250))
-    date_modified = Column(DateTime, default=datetime.utcnow)
-    date_available = Column(DateTime, default=datetime.utcnow)
-    ingredients_english = Column(Text)
+subway = Table('subway', Base.metadata,
+    Column('station', String(250), ForeignKey('subway_station.id')),
+    Column('line', String(1), ForeignKey('subway_line.id'))
+)
 
-    @property
-    def serialize(self):
-        return dict(
-            NDB_Number=self.NDB_Number,
-            long_name=self.long_name,
-            data_source=self.data_source,
-            gtin_upc=self.gtin_upc,
-            manufacturer=self.manufacturer,
-            date_modified=self.date_modified,
-            date_available=self.date_available,
-            ingredients_english=self.ingredients_english
+class SubwayStation(Base):
+    __tablename__ = 'subway_station'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(250))
+    lat = Column(Float, nullable=False)
+    lon = Column(Float, nullable=False)
+    lines = relationship(
+        'SubwayLine',
+        secondary=subway,
+        backref='stations'
         )
+    
 
+class SubwayLine(Base):
+    __tablename__ = 'subway_line'
+    id = Column(String, primary_key=True)
+    color = Column(String(250))
 
 
 # Create an engine that stores data in the local directory's

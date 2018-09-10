@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from sqlalchemy.orm import sessionmaker
 
-from models import Base, Product, engine
+from models import Base, engine
 
 
 app = Flask(__name__)
