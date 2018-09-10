@@ -1,7 +1,8 @@
 from flask import Flask, jsonify
 from sqlalchemy.orm import sessionmaker
 
-from models import Base, engine
+from models import Base, engine, SubwayStation, SubwayLine
+
 
 
 app = Flask(__name__)
@@ -27,8 +28,8 @@ def hello_world():
 
 @app.route('/list')
 def get_list():
-    products = session.query(Product).slice(0, 10)
-    return jsonify([i.serialize for i in products])
+    stations = session.query(SubwayStation).slice(0, 10)
+    return jsonify([i.serialize for i in stations])
 
 
 if __name__ == '__main__':

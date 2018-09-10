@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import (Table, Column, Integer, String, DateTime, Text, create_engine, 
-    ForeignKey, Float)
+    ForeignKey, Float, ForeignKeyConstraint)
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -10,27 +10,46 @@ Base = declarative_base()
 
 
 subway = Table('subway', Base.metadata,
-    Column('station', String(250), ForeignKey('subway_station.id')),
-    Column('line', String(1), ForeignKey('subway_line.id'))
+    Column('line', String, ForeignKey('subway_line.id')),
+    Column('lat', Float),
+    Column('lon', Float),
+    ForeignKeyConstraint(['lat', 'lon'], ['subway_station.lat', 'subway_station.lon'])
+
 )
 
 class SubwayStation(Base):
     __tablename__ = 'subway_station'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(250))
-    lat = Column(Float, nullable=False)
-    lon = Column(Float, nullable=False)
+    name = Column(String(100), nullable=False)
+    lat = Column(Float, primary_key=True,)
+    lon = Column(Float, primary_key=True,)
     lines = relationship(
         'SubwayLine',
         secondary=subway,
         backref='stations'
         )
-    
+
+    @property
+    def serialize(self):
+        return dict(
+            id = self.id,
+            name = self.name,
+            lat = self.lat,
+            lon = self.lon,
+            lines = self.lines
+        )    
 
 class SubwayLine(Base):
     __tablename__ = 'subway_line'
     id = Column(String, primary_key=True)
     color = Column(String(250))
+
+    @property
+    def serialize(self):
+        return dict(
+            id = self.id,
+            color = self.color
+        )
+    
 
 
 # Create an engine that stores data in the local directory's

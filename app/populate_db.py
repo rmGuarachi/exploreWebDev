@@ -24,16 +24,14 @@ def get_subway_station_info(row):
 def create_db():
     df = pd.read_csv('dataset/mta_subway_station.csv')
     # create transcompany
-    train_stations = []
+    train_station = []
     train_lines = []
     stations  = df.iterrows()
     for index, row in df.iterrows():
         info = get_subway_station_info(row)
         cStation = SubwayStation(name=info['name'], lat=info['lat'], lon=info['lon'])
-        train_stations.append(cStation)
         for t in info['trains']:
             add = True
-            print(info['trains'])
             c = SubwayLine(id=t)
             for line in train_lines:
                 if line.id == t:
@@ -41,14 +39,12 @@ def create_db():
                     c = line
                     add = False
                     break
+            cStation.lines.append(c)
             if add:
                 train_lines.append(c)
-            cStation.lines.append(c)
+                session.add(c)
+        session.add(cStation)
     print("here")
-    for train in train_lines:
-        print(train.id)
-    session.bulk_save_objects(train_stations)
-    session.bulk_save_objects(train_lines)
     session.commit()
 
 
@@ -57,4 +53,7 @@ if __name__ == '__main__':
     Base.metadata.bind = engine
     dbsession = sessionmaker(bind=engine)
     session = dbsession()
+    me = SubwayStation(name="me", lat=2.3, lon=2.3)
+    me.lines.append(SubwayLine(id='me'))
+    session.add(me)
     create_db()    
