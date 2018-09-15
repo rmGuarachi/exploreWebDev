@@ -4,3 +4,47 @@
 body {
 	background: white;
 }
+
+body { 
+  margin:0;
+  padding:0;
+}
+
+.map-container {
+ position: relative; 
+ padding-top: 15%;  
+ border: solid 3px red;
+}
+
+#mapbox, #mapbox2 { 
+  position:absolute; 
+  top:0; 
+  bottom:0; 
+  width:100%; 
+}
+
+#info {
+    display: block;
+    position: relative;
+    margin: 0px auto;
+    width: 50%;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #222;
+    background: #fff;
+}
+
+#example-table {
+    width: 40%;
+    display: block;
+    float: left;
+}
+
+.map-container {
+    width: 55%;
+    height: 40vh;
+    display: block;
+    float: right;
+}

@@ -1,63 +1,29 @@
 <!-- index.html -->
 <!doctype html>
 <html>
-  <head>
-    <title>Practice JS</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./build/css/main.css">
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body { 
-          margin:0; 
-          padding:0; 
-        }
-        
-        .map-container {
-          position: relative; 
-          padding-top: 20%;  
-          margin-top: 20px; 
-          border: solid 3px red;
-        }
-        
-        #mapbox, #mapbox2 { 
-          position:absolute; 
-          top:0; 
-          bottom:0; 
-          width:100%; 
-        }
-
-        #info {
-        display: block;
-        position: relative;
-        margin: 0px auto;
-        width: 50%;
-        padding: 10px;
-        border: none;
-        border-radius: 3px;
-        font-size: 12px;
-        text-align: center;
-        color: #222;
-        background: #fff;
-    }
-    </style>
-  </head>
-  <body>
-      <div class="container">
-        <h1>Tabulator</h1>
-        <div id="example-table"></div>
-      </div>
-      <div class="map-container">
-        <h1>Mapbox</h1>
-        <div id="mapbox"></div>
-        <div id="info"></div>
-        <div id='menu'>
-            <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
-            <input id='satellite' type='radio' name='rtoggle' value='mapbox://styles/mapbox/satellite-v9'>
-            <label for='satellite'>satellite</label>
-        </div>
-      </div>
-    <script src="./build/js/bundle.js"></script>
+<head>
+  <title>Practice JS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./build/css/main.css">
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+  <h1>MTA SUBWAY SYSTEM</h1>
+  <div id="subway_line_icon">
+  </div>
+  <div id="example-table"></div>
+  <div class="map-container">
+    <h1>Mapbox</h1>
+    <div id="mapbox"></div>
+    <div id="info"></div>
+    <div id='menu'>
+      <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+      <input id='satellite' type='radio' name='rtoggle' value='mapbox://styles/mapbox/satellite-v9'>
+      <label for='satellite'>satellite</label>
+    </div>
+  </div>
+  <script src="./build/js/bundle.js"></script>
   </body>
 </html>

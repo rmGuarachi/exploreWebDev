@@ -31,8 +31,22 @@ def get_list():
     # TODO temp fix for issues with sqlite thread issues
     dbsession = sessionmaker(bind=engine)
     session = dbsession()
-    stations = session.query(SubwayStation).slice(0,10)
+    stations = session.query(SubwayStation).all()
     return jsonify([i.serialize for i in stations])
+
+
+@app.route('/list/source/<subway_line>')
+def get_line_stations(subway_line):
+    dbsession = sessionmaker(bind=engine)
+    session = dbsession()
+    stations = session.query(SubwayLine).all()
+    if not stations:
+        return '{}'
+    db = dict(
+            type="FeatureCollection",
+            features=stations[1].to_geojson
+        )
+    return jsonify(db)
 
 
 @app.route('/update/station/<lat>/<lon>')

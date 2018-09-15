@@ -34,7 +34,23 @@ class SubwayStation(Base):
             lat = self.lat,
             lon = self.lon,
             lines = [i.serialize for i in self.lines]
-        )    
+        )
+    
+    @property
+    def to_geojson(self):
+        return dict(
+            type= "Feature",
+            geometry=dict(
+                type= "Point",
+                coordinates=[self.lon, self.lat]
+            ),
+            properties= dict(
+                title=self.name,
+                icon='circle-stroked-15',
+                color='#B22222'
+            )
+        )
+     
 
 class SubwayLine(Base):
     __tablename__ = 'subway_line'
@@ -47,6 +63,10 @@ class SubwayLine(Base):
             id = self.id,
             color = self.color or ""
         )
+
+    @property
+    def to_geojson(self):
+        return [i.to_geojson for i in self.stations]
     
 
 
