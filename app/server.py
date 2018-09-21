@@ -26,7 +26,7 @@ def hello_world():
     return 'Hello, World!'
 
 
-@app.route('/list')
+@app.route('/list/')
 def get_list():
     # TODO temp fix for issues with sqlite thread issues
     dbsession = sessionmaker(bind=engine)
@@ -34,17 +34,25 @@ def get_list():
     stations = session.query(SubwayStation).all()
     return jsonify([i.serialize for i in stations])
 
+# @app.route('/list/source/all_lines')
+# def get_line_stations():
+#     dbsession = sessionmaker(bind=engine)
+#     session = dbsession()
+#     stations = session.query(SubwayLine).all()
+#     return 'none'
+
 
 @app.route('/list/source/<subway_line>')
 def get_line_stations(subway_line):
     dbsession = sessionmaker(bind=engine)
     session = dbsession()
-    stations = session.query(SubwayLine).all()
+    stations = session.query(SubwayLine).filter_by(id=subway_line)
+    print(subway_line)
     if not stations:
         return '{}'
     db = dict(
             type="FeatureCollection",
-            features=stations[1].to_geojson
+            features=stations[0].to_geojson
         )
     return jsonify(db)
 

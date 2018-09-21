@@ -22,6 +22,7 @@ def get_subway_station_info(row):
 
 
 def create_db():
+    # TODO fix populatedb some stations are not being added eg. R line
     df = pd.read_csv('dataset/mta_subway_station.csv')
     # create transcompany
     train_station = []

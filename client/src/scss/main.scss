@@ -25,7 +25,9 @@ body {
 
 #info {
     display: block;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 30%;
     margin: 0px auto;
     width: 50%;
     border: none;
@@ -47,4 +49,33 @@ body {
     height: 40vh;
     display: block;
     float: right;
+}
+
+.train-icon {
+    border-radius: 100%;
+    border-color: white;
+    color: white;
+}
+
+.subway_line_box {
+  background: #f0f0f0;
+  border: solid 3px black;
+}
+
+
+#cy {
+  width: 55%;
+  height: 40vh;
+  display: block;
+  float: right;
+  border: 2px solid red;
+}
+
+ #menu {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    padding: 2px;
+    font-family: 'Open Sans', sans-serif;
 }
