@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <title>Practice JS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./build/css/main.css">
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+  <h1>MTA SUBWAY SYSTEM</h1>
+  <div class="container subway_line_box p-2">
+    <h3>Toggle display Subway Line</h3>
+    <div id="subway_line_icon">
+  </div>
+  </div>
+  <div id="example-table"></div>
+  <div class="map-container">
+    <h1>Mapbox</h1>
+    <div id="mapbox"></div>
+    <div id="info"></div>
+    <div id='menu'>
+      <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+      <input id='satellite' type='radio' name='rtoggle' value='mapbox://styles/mapbox/satellite-v9'>
+      <label for='satellite'>satellite</label>
+    </div>
+  </div>
+  <div id="cy"></div>
+  <script src="./build/js/bundle.js"></script>
+  </body>
+</html>
