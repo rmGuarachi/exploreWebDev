@@ -240,67 +240,80 @@ map.on('load', function(){
     });
 });
 
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
 
-var cy = cytoscape({
+function switchLayer(layer) {
+    var layerId = layer.target.id;
+    map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+}
 
-  container: document.getElementById('cy'), // container to render in
+for (var i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
 
-  elements: [ // list of graph elements to start with
-    { // node a
-      data: { id: 'a' }
-    },
-    { // node b
-      data: { id: 'b' }
-    },
-    { // node b
-      data: { id: 'c' }
-    },
-    { // node b
-      data: { id: 'd' }
-    },
-    { // node b
-      data: { id: 'e' }
-    },
-    { // edge ab
-      data: { id: 'ab', source: 'a', target: 'b' }
-    },
-    {
-      data: { id: 'ce', source: 'c', target: 'e' }
-    },
-    {
-      data: { id: 'ae', source: 'a', target: 'e' }
-    },
-    {
-      data: { id: 'bd', source: 'b', target: 'd' }
-    },
-     { // node a
-      data: { id: 'g' }
-    },
-  ],
-
-  style: [ // the stylesheet for the graph
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#666',
-        'label': 'data(id)'
-      }
-    },
-
-    {
-      selector: 'edge',
-      style: {
-        'width': 3,
-        'line-color': '#ccc',
-        'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle'
-      }
-    }
-  ],
+cytoscape({
+  container: document.getElementById('cy'),
 
   layout: {
-    name: 'breadthfirst',
-    rows: 1
-  }
+    name: 'cose',
+    padding: 2
+  },
 
+  style: cytoscape.stylesheet()
+    .selector('node')
+      .css({
+        'background-fit': 'cover', 
+        'background-position': 'center', 
+        'border-radius': '0',
+        color: 'black',
+        shape: 'rectangle',
+      })
+    .selector('.capacitor-symbol')
+        .css({
+            'background-image': '/assets/singleline/capacitor-symbol.png'
+        })
+    .selector('.battery-symbol')
+        .css({
+            'background-image': '/assets/singleline/battery-symbol.png'
+        })
+    .selector('.current-transformer-symbol')
+        .css({
+            'background-image': '/assets/singleline/current-transformer-symbol.png'
+        })
+    .selector('.disconnect-switch-symbol')
+        .css({
+            'background-image': '/assets/singleline/disconnect-switch-symbol.png'
+        })
+    .selector('.emergency-generator-symbol')
+        .css({
+            'background-image': '/assets/singleline/emergency-generator-symbol.png'
+        }), 
+
+  elements: {
+    nodes: [
+      { data: { id: 'j', name: 'Jerry', weight: 80, faveColor: '#6FB1FC'}, classes: 'capacitor-symbol'},
+      { data: { id: 'e', name: 'Elaine', weight: 45, faveColor: '#EDA1ED'}, classes: 'emergency-generator-symbol' },
+      { data: { id: 'k', name: 'Kramer', weight: 75, faveColor: '#86B342' } , classes: 'disconnect-switch-symbol'},
+      { data: { id: 'g', name: 'George', weight: 70, faveColor: '#F5A45D' } }
+    ],
+    edges: [
+      { data: { source: 'j', target: 'e', faveColor: '#6FB1FC' } },
+      { data: { source: 'j', target: 'k', faveColor: '#6FB1FC' } },
+      { data: { source: 'j', target: 'g', faveColor: '#6FB1FC' } },
+
+      { data: { source: 'e', target: 'j', faveColor: '#EDA1ED' } },
+      { data: { source: 'e', target: 'k', faveColor: '#EDA1ED' }, classes: 'questionable' },
+
+      { data: { source: 'k', target: 'j', faveColor: '#86B342' } },
+      { data: { source: 'k', target: 'e', faveColor: '#86B342' } },
+      { data: { source: 'k', target: 'g', faveColor: '#86B342' } },
+
+      { data: { source: 'g', target: 'j', faveColor: '#F5A45D' } }
+    ]
+  },
+
+  ready: function(){
+    window.cy = this;
+  }
 });

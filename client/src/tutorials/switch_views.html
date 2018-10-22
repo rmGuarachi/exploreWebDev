@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+  <title>MapBox - Switch Views</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="../build/css/main.css">
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+  <style type="text/css">
+    pre {
+      background-color: #000;
+      color: white;
+      padding: 1%;
+      height: 700px;
+
+    }
+
+    #mapbox3 {
+      height: 500px;
+      border: blue solid 2px;
+      position: relative; 
+      width:100%;
+    }
+
+    #menu {
+      position: absolute;
+      background: #fff;
+      top: 3px;
+      left: 20px;
+      height: 40px;
+      padding: 10px;
+      border: 1px solid red;
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Learning MapBox</h1><hr>
+  <h2>Switch Views</h2>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <pre>
+          <code>
+mapboxgl.accessToken = 'pk.eyJ1Ijoicm1ndWFyYWNoaSIsImEiOiJjamwzdDdseXcyNTk5M3Fuc3p2ZzJmdXdlIn0.cjtHea9XjbVzu7IQDIXsog';
+var map = new mapboxgl.Map({
+    name: 'MTA',
+    container: 'mapbox3',
+    center: [-74.50, 40],
+    zoom: 2,
+    style: 'mapbox://styles/rmguarachi/cjlb7kbx22pps2rp13pnf9yz5',
+    logoPosition: 'top-right',
+});
+
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+
+function switchLayer(layer) {
+    var layerId = layer.target.id;
+    map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+}
+
+for (var i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
+          </code>
+        </pre>
+      </div>
+      <div class="col-md-6">
+        <div id="mapbox3"></div>
+        <div id='menu'>
+            <input id='basic' type='radio' name='rtoggle' value='basic'>
+            <label for='basic'>basic</label>
+            <input id='streets' type='radio' name='rtoggle' value='streets' checked="checked">
+            <label for='streets'>streets</label>
+            <input id='bright' type='radio' name='rtoggle' value='bright'>
+            <label for='bright'>bright</label>
+            <input id='light' type='radio' name='rtoggle' value='light'>
+            <label for='light'>light</label>
+            <input id='dark' type='radio' name='rtoggle' value='dark'>
+            <label for='dark'>dark</label>
+            <input id='satellite' type='radio' name='rtoggle' value='satellite'>
+            <label for='satellite'>satellite</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul>
+          <h3>Resources</h3>
+          <li>
+            <a href="https://www.mapbox.com/mapbox-gl-js/example/setstyle/">
+            Change a map's style from MapBox Example
+            </a>
+          </li>
+          <li>
+            <a href="https://www.mapbox.com/mapbox-studio/">
+              Mapbox Studio
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1Ijoicm1ndWFyYWNoaSIsImEiOiJjamwzdDdseXcyNTk5M3Fuc3p2ZzJmdXdlIn0.cjtHea9XjbVzu7IQDIXsog';
+    var map = new mapboxgl.Map({
+        name: 'MTA',
+        container: 'mapbox3',
+        center: [-74.50, 40],
+        zoom: 2,
+        style: 'mapbox://styles/rmguarachi/cjlb7kbx22pps2rp13pnf9yz5',
+        logoPosition: 'top-right',
+    });
+
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+    }
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
+
+  </script>
+  </body>
+</html>
